@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const helmet = require("helmet");
+const { default: mongoose } = require("mongoose");
 
 // Default Helmet settings do a lot of configuration for us already
 // Further options are here:
@@ -9,6 +10,7 @@ app.use(helmet());
 
 // CORS to help limit what front-ends can access our API!
 const cors = require("cors");
+
 let corsOption = {
 	origin: [
 		"http://localhost:5000",
@@ -28,6 +30,27 @@ app.get("/", (request, response) => {
 		message: "Hello, world!"
 	});
 });
+
+
+
+
+// Database health check route to confirm that our models have loaded properly
+app.get("/databaseHealth", (request, response) => {
+	response.json({
+		models: mongoose.connection.modelNames(),
+		host: mongoose.connection.host
+	});
+});
+
+
+
+
+
+
+
+
+
+
 
 // 404 route handler, if no previously-mounted route has activated
 // then this route will activate and send a message to the client

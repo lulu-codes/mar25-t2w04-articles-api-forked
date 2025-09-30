@@ -1,11 +1,18 @@
 
 const PORT = process.env.PORT || 3000;
 
-// 1. Connect to the database 
+const { dbConnect } = require("./database/connectionManager.js");
 
-// 2. Activate the Express server 
+
 const {app} = require("./server.js");
 
-app.listen(PORT, () => {
-	console.log("The server is running in port: " + PORT);
+// 1. Connect to the database 
+dbConnect().then(() => {
+
+	// 2. Activate the Express server 
+	app.listen(PORT, () => {
+		console.log("The server is running in port: " + PORT);
+	});
+
 });
+
